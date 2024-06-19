@@ -24,6 +24,8 @@
 
 package test;
 
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 
 public class OtherTest extends Base {
@@ -32,4 +34,7 @@ public class OtherTest extends Base {
         run();
     }
 
+    @Test public void myFailingTest() {
+      fail("This fails always");
+  }
 }
