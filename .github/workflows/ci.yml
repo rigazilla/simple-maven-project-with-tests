@@ -21,11 +21,11 @@ jobs:
           cache: maven
       - run: mvn --version
       - name: Build with Maven
-        run: mvn -s maven-settings.xml clean install -B -e -DskipTests
+        run: mvn clean install -B -e -DskipTests
       - name: Test with Maven
         run: |
           pushd query
-          mvn -s ../maven-settings.xml verify -B -e -DrerunFailingTestsCount=2 -Dmaven.test.failure.ignore=true -Dansi.strip=true -Pnative
+          mvn -s verify -B -e -DrerunFailingTestsCount=2 -Dmaven.test.failure.ignore=true -Dansi.strip=true -Pnative
           popd
       - name: Publish Test Report
         if: success() || failure()
