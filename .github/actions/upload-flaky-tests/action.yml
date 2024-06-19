@@ -26,7 +26,7 @@ runs:
             SEP=$'\n'
           done
         done
-        fdir=$(find -wholename '*/surefire-reports*/TEST-*')
+        fdir=$(find -wholename '*/surefire-reports*/TEST-*.xml')
         FLAKES_PR_COMMENT=$(xsltproc .github/actions/upload-flaky-tests/flaky.xslt $fdir)
         if [ "$FLAKES" != "" ]; then
           PR="${{ github.event.number }}"
