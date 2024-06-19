@@ -8,11 +8,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Install xmllint tool
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xsltproc
     - id: flaky-tests
       name: Find flaky tests
       #if: github.repository == 'keycloak/keycloak'
       shell: bash
-      # language=bash
       run: |
         FLAKES=""
         SEP=""
@@ -21,8 +25,8 @@ runs:
             FLAKES="$FLAKES$SEP$i"
             SEP=$'\n'
           done
-        done
-
+        fdir=$(find -wholename '*/surefire-reports*/TEST-*')
+        FLAKES_PR_COMMENT=$(xsltproc flaky.xslt $fdir)
         if [ "$FLAKES" != "" ]; then
           PR="${{ github.event.number }}"
           JOB_NAME="${{ inputs.job-name }}"
@@ -38,13 +42,15 @@ runs:
           echo "job_url=$JOB_URL" >> job-summary.properties
           if [ "$PR" != "" ]; then
             echo "pr=$PR" >> job-summary.properties
+            pr_url=https://github.com/${{ github.repository }}/pull/$PR
             echo "pr_url=https://github.com/${{ github.repository }}/pull/$PR" >> job-summary.properties
+            gh pr comment $pr_url -b $FLAKES_PR_COMMENT
           fi
-
           echo "flakes<<EOF" >> $GITHUB_OUTPUT
           echo "job-summary.properties" >> $GITHUB_OUTPUT
           echo "$FLAKES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
+
         fi
 
     - uses: actions/upload-artifact@v4
