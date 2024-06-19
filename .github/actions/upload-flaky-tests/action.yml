@@ -28,7 +28,7 @@ runs:
         done
         fdir=$(find -wholename '*/surefire-reports*/TEST-*')
         FLAKES_PR_COMMENT=$(xsltproc flaky.xslt $fdir)
-        echo $FLAKES_PR_COMMENT
+        echo "$FLAKES_PR_COMMENT"
         if [ "$FLAKES" != "" ]; then
           PR="${{ github.event.number }}"
           JOB_NAME="${{ inputs.job-name }}"
@@ -46,7 +46,7 @@ runs:
             echo "pr=$PR" >> job-summary.properties
             pr_url=https://github.com/${{ github.repository }}/pull/$PR
             echo "pr_url=https://github.com/${{ github.repository }}/pull/$PR" >> job-summary.properties
-            gh pr comment $pr_url -b $FLAKES_PR_COMMENT
+            gh pr comment $pr_url -b "$FLAKES_PR_COMMENT"
           fi
           echo "flakes<<EOF" >> $GITHUB_OUTPUT
           echo "job-summary.properties" >> $GITHUB_OUTPUT
