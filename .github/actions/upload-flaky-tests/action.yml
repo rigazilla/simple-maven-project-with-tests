@@ -25,6 +25,7 @@ runs:
             FLAKES="$FLAKES$SEP$i"
             SEP=$'\n'
           done
+        done
         fdir=$(find -wholename '*/surefire-reports*/TEST-*')
         FLAKES_PR_COMMENT=$(xsltproc flaky.xslt $fdir)
         echo $FLAKES_PR_COMMENT
