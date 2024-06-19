@@ -46,7 +46,7 @@ runs:
             echo "pr=$PR" >> job-summary.properties
             pr_url=https://github.com/${{ github.repository }}/pull/$PR
             echo "pr_url=https://github.com/${{ github.repository }}/pull/$PR" >> job-summary.properties
-            gh pr comment $pr_url -b "$FLAKES_PR_COMMENT"
+            echo "$FLAKES_PR_COMMENT" | gh pr comment $pr_url -F -
           fi
           echo "flakes<<EOF" >> $GITHUB_OUTPUT
           echo "job-summary.properties" >> $GITHUB_OUTPUT
