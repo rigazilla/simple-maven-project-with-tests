@@ -28,7 +28,6 @@ runs:
         done
         fdir=$(find -wholename '*/surefire-reports*/TEST-*')
         FLAKES_PR_COMMENT=$(xsltproc flaky.xslt $fdir)
-        echo "$FLAKES_PR_COMMENT"
         if [ "$FLAKES" != "" ]; then
           PR="${{ github.event.number }}"
           JOB_NAME="${{ inputs.job-name }}"
